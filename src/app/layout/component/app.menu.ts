@@ -8,12 +8,14 @@ import { AppMenuitem } from './app.menuitem';
     selector: 'app-menu',
     standalone: true,
     imports: [CommonModule, AppMenuitem, RouterModule],
-    template: `<ul class="layout-menu">
-        <ng-container *ngFor="let item of model; let i = index">
-            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-            <li *ngIf="item.separator" class="menu-separator"></li>
-        </ng-container>
-    </ul> `
+    template: `
+        <ul class="layout-menu">
+            <ng-container *ngFor="let item of model; let i = index">
+                <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+                <li *ngIf="item.separator" class="menu-separator"></li>
+            </ng-container>
+        </ul>
+    `
 })
 export class AppMenu {
     model: MenuItem[] = [];
@@ -29,7 +31,12 @@ export class AppMenu {
                 items: [
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Button', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/uikit/button'] },
+                    {
+                        label: 'Button',
+                        icon: 'pi pi-fw pi-mobile',
+                        class: 'rotated-icon',
+                        routerLink: ['/uikit/button']
+                    },
                     { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
                     { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
                     { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
@@ -42,6 +49,17 @@ export class AppMenu {
                     { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
                     { label: 'Timeline', icon: 'pi pi-fw pi-calendar', routerLink: ['/uikit/timeline'] },
                     { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
+                ]
+            },
+            {
+                label: 'Videos',
+                icon: 'pi pi-fw pi-video',
+                items: [
+                    {
+                        label: 'Create Videos',
+                        icon: 'pi pi-fw pi-video',
+                        routerLink: ['/videos']
+                    }
                 ]
             },
             {

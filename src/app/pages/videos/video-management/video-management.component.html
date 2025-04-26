@@ -1,0 +1,127 @@
+<p-card>
+    <div class="p-card-title flex justify-between mb-7">
+        <div>Danh sách video</div>
+        <button (click)="openUpLoad()" pButton>Tải Video</button>
+    </div>
+    <p-table [globalFilterFields]="['title', 'format']" [paginator]="true" [rowsPerPageOptions]="[5, 10, 25]"
+             [rows]="10" [value]="videos">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="title">
+                    Tiêu đề
+                    <p-sortIcon field="title"></p-sortIcon>
+                </th>
+                <th pSortableColumn="format">
+                    Định dạng
+                    <p-sortIcon field="format"></p-sortIcon>
+                </th>
+                <th pSortableColumn="size">
+                    Kích thước
+                    <p-sortIcon field="size"></p-sortIcon>
+                </th>
+                <th pSortableColumn="uploadDate">
+                    Ngày tải
+                    <p-sortIcon field="uploadDate"></p-sortIcon>
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </ng-template>
+        <ng-template let-video pTemplate="body">
+            <tr>
+                <td>{{ video.title }}</td>
+                <td>{{ video.format }}</td>
+                <td>{{ video.size }}</td>
+                <td>{{ video.uploadDate | date: 'dd/MM/yyyy' }}</td>
+                <td>
+                    <button (click)="viewVideo(video)" class="p-button-rounded p-button-success p-button-text"
+                            icon="pi pi-eye" pButton></button>
+                    <button (click)="deleteVideo(video)" class="p-button-rounded p-button-danger p-button-text"
+                            icon="pi pi-trash" pButton></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>
+<p-drawer [(visible)]="visible" [closable]="false" position="right" styleClass="!w-1/4">
+    <ng-template pTemplate="header">
+        <div class="sidebar-header w-full flex items-center justify-between">
+            <div class="flex justify-content-between">
+                <div (click)="visible = false" class="ase-mt4 cursor-pointer" role="button">
+                    <i class="pi pi-times"></i>
+                </div>
+                <div class="ml-4">Upload Video</div>
+            </div>
+            <div class="header-actions flex align-items-center">
+                <p-button (onClick)="visible = false" [label]="'Close'" severity="secondary" />
+                <p-button (onClick)="submitUpload()" class="ml-4" label="Submit" />
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+        <form [formGroup]="uploadVideoForm">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p-floatlabel variant="in">
+                        <input autocomplete="off" class="w-full" formControlName="title" id="in_labelle" pInputText />
+                        <label for="in_labelle">Video's title</label>
+                    </p-floatlabel>
+                </div>
+                <div>
+                    <p-floatlabel class="w-full" pStyleClass="w-full" variant="in">
+                        <p-select [options]="COUNTRIES" class="w-full" formControlName="country" id="in_label22"
+                                  inputId="in_label22" optionLabel="label" optionValue="value" styleClass="w-full"
+                                  variant="filled" />
+                        <label for="in_label22">Country</label>
+                    </p-floatlabel>
+                </div>
+                <div class="col-span-2">
+                    <p-floatlabel class="w-full" variant="in">
+                        <p-multiselect [maxSelectedLabels]="3" [options]="CATEGORY" filter formControlName="category"
+                                       id="in_label23" optionLabel="label" optionValue="value"
+                                       styleClass="w-full"></p-multiselect>
+                        <label for="in_label23">Categories</label>
+                    </p-floatlabel>
+                </div>
+                <div>
+                    <p-floatlabel class="w-full" variant="in">
+                        <p-multiselect [maxSelectedLabels]="3" [options]="HASHTAGS" filter formControlName="hashtag"
+                                       id="in_label3" optionLabel="label" optionValue="value"
+                                       styleClass="w-full"></p-multiselect>
+                        <label for="in_label3">Hashtag</label>
+                    </p-floatlabel>
+                </div>
+                <div>
+                    <p-floatlabel class="w-full" variant="in">
+                        <p-multiselect [maxSelectedLabels]="3" [options]="ACTORS" filter formControlName="actors"
+                                       id="in_label34" optionLabel="label" optionValue="value"
+                                       styleClass="w-full"></p-multiselect>
+                        <label for="in_label34">Actress/Actor</label>
+                    </p-floatlabel>
+                </div>
+                <div class="col-span-2">
+                    <p-floatlabel variant="in">
+                    <textarea class="h-full w-full" cols="30" formControlName="description" id="over_label" pTextarea
+                              rows="5" style="resize: none"></textarea>
+                        <label for="over_label">Description</label>
+                    </p-floatlabel>
+                </div>
+                <div>
+                    <p-fileUpload (onSelect)="selectFile($event)" (onUpload)="onUpload($event)"
+                                  [auto]="true"
+                                  accept="video/*"
+                                  chooseLabel="Chọn video"
+                                  maxFileSize="1000000000" mode="basic" name="videoUpload"
+                                  styleClass="!justify-start"></p-fileUpload>
+                </div>
+                <div class="col-span-2">
+                    <p-floatlabel variant="in">
+                        <input [value]="videoPath()" autocomplete="off" class="w-full" disabled id="urrllId"
+                               pInputText />
+                        <label for="urrllId">Video's name</label>
+                    </p-floatlabel>
+                </div>
+
+            </div>
+        </form>
+    </ng-template>
+</p-drawer>
