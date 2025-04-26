@@ -4,7 +4,7 @@
         <button (click)="openUpLoad()" pButton>Tải Video</button>
     </div>
     <p-table [globalFilterFields]="['title', 'format']" [paginator]="true" [rowsPerPageOptions]="[5, 10, 25]"
-             [rows]="10" [value]="videos">
+             [rows]="10" [value]="videos()">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="title">
@@ -12,13 +12,27 @@
                     <p-sortIcon field="title"></p-sortIcon>
                 </th>
                 <th pSortableColumn="format">
-                    Định dạng
+                    Quốc gia
                     <p-sortIcon field="format"></p-sortIcon>
                 </th>
                 <th pSortableColumn="size">
-                    Kích thước
+                    Thể loại
                     <p-sortIcon field="size"></p-sortIcon>
                 </th>
+                <th pSortableColumn="size">
+                    Diễn viên
+                    <p-sortIcon field="size"></p-sortIcon>
+                </th>
+
+                <th pSortableColumn="size">
+                    Hashtag
+                    <p-sortIcon field="size"></p-sortIcon>
+                </th>
+                <th pSortableColumn="size">
+                    Dung lượng
+                    <p-sortIcon field="size"></p-sortIcon>
+                </th>
+
                 <th pSortableColumn="uploadDate">
                     Ngày tải
                     <p-sortIcon field="uploadDate"></p-sortIcon>
@@ -27,18 +41,25 @@
             </tr>
         </ng-template>
         <ng-template let-video pTemplate="body">
+
             <tr>
                 <td>{{ video.title }}</td>
-                <td>{{ video.format }}</td>
-                <td>{{ video.size }}</td>
-                <td>{{ video.uploadDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ video.country }}</td>
+                <td>{{ video.category.join(', ') }}</td>
+                <td>{{ video.actors.join(', ') }}</td>
+                <td>{{ video.hashtag.join(', ') }}</td>
+                <td>{{ video.size | convertToMbPipe }}</td>
+                <td>{{ video.createdAt | date: 'dd/MM/yyyy, h:mm:ss a' }}</td>
                 <td>
                     <button (click)="viewVideo(video)" class="p-button-rounded p-button-success p-button-text"
-                            icon="pi pi-eye" pButton></button>
+                            icon="pi pi-eye" pButton>
+                    </button>
                     <button (click)="deleteVideo(video)" class="p-button-rounded p-button-danger p-button-text"
                             icon="pi pi-trash" pButton></button>
                 </td>
             </tr>
+
+
         </ng-template>
     </p-table>
 </p-card>
@@ -100,18 +121,23 @@
                 </div>
                 <div class="col-span-2">
                     <p-floatlabel variant="in">
-                    <textarea class="h-full w-full" cols="30" formControlName="description" id="over_label" pTextarea
-                              rows="5" style="resize: none"></textarea>
+                        <textarea class="h-full w-full" cols="30" formControlName="description" id="over_label"
+                                  pTextarea rows="5" style="resize: none"></textarea>
                         <label for="over_label">Description</label>
                     </p-floatlabel>
                 </div>
                 <div>
-                    <p-fileUpload (onSelect)="selectFile($event)" (onUpload)="onUpload($event)"
-                                  [auto]="true"
-                                  accept="video/*"
-                                  chooseLabel="Chọn video"
-                                  maxFileSize="1000000000" mode="basic" name="videoUpload"
-                                  styleClass="!justify-start"></p-fileUpload>
+                    <p-fileUpload
+                        (onSelect)="selectFile($event)"
+                        (onUpload)="onUpload($event)"
+                        [auto]="true"
+                        accept="video/*"
+                        chooseLabel="Chọn video"
+                        maxFileSize="1000000000"
+                        mode="basic"
+                        name="videoUpload"
+                        styleClass="!justify-start"
+                    ></p-fileUpload>
                 </div>
                 <div class="col-span-2">
                     <p-floatlabel variant="in">
@@ -120,7 +146,6 @@
                         <label for="urrllId">Video's name</label>
                     </p-floatlabel>
                 </div>
-
             </div>
         </form>
     </ng-template>

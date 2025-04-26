@@ -16,10 +16,11 @@ import { Drawer } from 'primeng/drawer';
 import { StyleClass } from 'primeng/styleclass';
 import { MultiSelect } from 'primeng/multiselect';
 import { Textarea } from 'primeng/textarea';
+import { ConvertToMbPipe } from '../../../../pipes/convert-to-mb.pipe';
 
 @Component({
     selector: 'app-video-management',
-    imports: [Card, FileUpload, FormsModule, InputText, Button, DropdownModule, TableModule, ButtonDirective, DatePipe, FloatLabel, ReactiveFormsModule, Select, Drawer, StyleClass, MultiSelect, Textarea],
+    imports: [Card, FileUpload, FormsModule, InputText, Button, DropdownModule, TableModule, ButtonDirective, DatePipe, FloatLabel, ReactiveFormsModule, Select, Drawer, StyleClass, MultiSelect, Textarea, ConvertToMbPipe],
     templateUrl: './video-management.component.html',
     standalone: true,
     styleUrl: './video-management.component.scss'
@@ -34,7 +35,7 @@ export class VideoManagementComponent implements OnInit {
     videoService = inject(VideoService);
     searchText = '';
     selectedFormat: any;
-    videos: Video[] = [];
+    videos: WritableSignal<Video[]> = signal<Video[]>([]);
     videoUrl: WritableSignal<string[]> = signal<string[]>([]);
     videoPath: WritableSignal<string> = signal<string>('');
     fileUpload: File = new File([], '');
@@ -50,6 +51,7 @@ export class VideoManagementComponent implements OnInit {
         thumbnail: this.fb.control(undefined),
         title: this.fb.control(''),
         views: this.fb.control(0),
+        size: this.fb.control(0),
         url: this.fb.control('')
     });
     protected readonly open = open;
@@ -60,6 +62,7 @@ export class VideoManagementComponent implements OnInit {
                 console.log(res);
                 const url: string[] = res.filter((item) => item.url).map((item) => item.url);
                 this.videoUrl.set(url);
+                this.videos.set(res);
             }
         });
     }
@@ -70,7 +73,9 @@ export class VideoManagementComponent implements OnInit {
 
     uploadVideo() {}
 
-    viewVideo(video: any) {}
+    viewVideo(video: Video) {
+        window.open(video.url, '_blank');
+    }
 
     deleteVideo(video: any) {}
 

@@ -11,6 +11,7 @@ export interface Video {
     country?: string;
     createdAt?: string;
     thumbnail?: string;
+    size: number;
     url: string;
 }
 

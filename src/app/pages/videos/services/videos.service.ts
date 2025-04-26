@@ -13,24 +13,18 @@ export class VideoService {
     }
 
     uploadVideo(videos: Video, file: File) {
+        console.log(videos);
         const formData = new FormData();
         formData.append('file', file);
         Object.entries(videos).forEach(([key, value]) => {
             if (Array.isArray(value)) {
-                value.forEach((item) => {
-                    formData.append(key, JSON.stringify(item));
-                });
+                formData.append(key, JSON.stringify(value));
             } else if (value !== null && value !== undefined) {
                 formData.append(key, value);
             } else {
                 formData.append(key, '');
             }
         });
-        // // Kiểm tra formData kết quả
-        // for (const pair of formData.entries()) {
-        //     console.log(pair[0], pair[1]);
-        // }
-        // return;
         this.http.post('http://localhost:3000/videos/upload', formData).subscribe((res) => console.log(res));
     }
 }
