@@ -1,3 +1,3 @@
 export const environment = {
-    fiyUrl: 'http://localhost:3000'
+    fiyUrl: 'https://fiy-vd-production.up.railway.app/'
 };
