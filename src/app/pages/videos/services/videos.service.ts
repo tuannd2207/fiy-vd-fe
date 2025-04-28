@@ -25,6 +25,6 @@ export class VideoService {
                 formData.append(key, '');
             }
         });
-        return this.http.post('http://localhost:3000/videos/upload', formData);
+        return this.http.post(environment.fiyUrl + '/videos/upload', formData);
     }
 }
