@@ -12,7 +12,7 @@ export class VideoService {
         return this.http.get<Video[]>(environment.fiyUrl + '/videos');
     }
 
-    uploadVideo(videos: Video, file: File) {
+    uploadVideo(videos: Video, file: File): Observable<any> {
         console.log(videos);
         const formData = new FormData();
         formData.append('file', file);
@@ -25,6 +25,6 @@ export class VideoService {
                 formData.append(key, '');
             }
         });
-        this.http.post('http://localhost:3000/videos/upload', formData).subscribe((res) => console.log(res));
+        return this.http.post('http://localhost:3000/videos/upload', formData);
     }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { VideoService } from '../services/videos.service';
 import { Card } from 'primeng/card';
 import { FileSelectEvent, FileUpload, FileUploadEvent } from 'primeng/fileupload';
@@ -17,6 +17,7 @@ import { StyleClass } from 'primeng/styleclass';
 import { MultiSelect } from 'primeng/multiselect';
 import { Textarea } from 'primeng/textarea';
 import { ConvertToMbPipe } from '../../../../pipes/convert-to-mb.pipe';
+import { finalize, Observable, switchMap, tap } from 'rxjs';
 
 @Component({
     selector: 'app-video-management',
@@ -31,6 +32,7 @@ export class VideoManagementComponent implements OnInit {
     readonly HASHTAGS = HASHTAGS;
     readonly ACTORS = ACTORS;
     readonly CATEGORY = CATEGORY;
+    readonly cdr = inject(ChangeDetectorRef);
     videoTitle = '';
     videoService = inject(VideoService);
     searchText = '';
@@ -57,14 +59,19 @@ export class VideoManagementComponent implements OnInit {
     protected readonly open = open;
 
     ngOnInit(): void {
-        this.videoService.getVideo().subscribe({
-            next: (res) => {
-                console.log(res);
-                const url: string[] = res.filter((item) => item.url).map((item) => item.url);
-                this.videoUrl.set(url);
-                this.videos.set(res);
-            }
-        });
+        this.getAllVideo().subscribe();
+    }
+
+    getAllVideo(): Observable<Video[]> {
+        return this.videoService.getVideo().pipe(
+            tap({
+                next: (res) => {
+                    const url: string[] = res.filter((item) => item.url).map((item) => item.url);
+                    this.videoUrl.set(url);
+                    this.videos.set(res);
+                }
+            })
+        );
     }
 
     onUpload($event: FileUploadEvent) {
@@ -90,6 +97,12 @@ export class VideoManagementComponent implements OnInit {
     }
 
     submitUpload() {
-        this.videoService.uploadVideo(this.uploadVideoForm.value as Video, this.fileUpload);
+        this.videoService
+            .uploadVideo(this.uploadVideoForm.value as Video, this.fileUpload)
+            .pipe(
+                switchMap(() => this.getAllVideo()),
+                finalize(() => this.cdr.detectChanges())
+            )
+            .subscribe();
     }
 }
