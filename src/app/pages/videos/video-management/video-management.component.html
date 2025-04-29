@@ -132,7 +132,7 @@
                         (onUpload)="onUpload($event)"
                         [auto]="true"
                         accept="video/*"
-                        chooseLabel="Chọn video"
+                        chooseLabel="Select video"
                         maxFileSize="1000000000"
                         mode="basic"
                         name="videoUpload"
@@ -144,6 +144,25 @@
                         <input [value]="videoPath()" autocomplete="off" class="w-full" disabled id="urrllId"
                                pInputText />
                         <label for="urrllId">Video's name</label>
+                    </p-floatlabel>
+                </div>
+                <div>
+                    <p-fileUpload
+                        (onSelect)="selectThumbnailFile($event)"
+                        [auto]="true"
+                        accept="image/*"
+                        chooseLabel="Select image"
+                        maxFileSize="1000000000"
+                        mode="basic"
+                        name="imageUpload"
+                        styleClass="!justify-start"
+                    ></p-fileUpload>
+                </div>
+                <div class="col-span-2">
+                    <p-floatlabel variant="in">
+                        <input [value]="imagePath()" autocomplete="off" class="w-full" disabled id="urrllIdmg"
+                               pInputText />
+                        <label for="urrllIdmg">Image's name</label>
                     </p-floatlabel>
                 </div>
             </div>

@@ -40,7 +40,9 @@ export class VideoManagementComponent implements OnInit {
     videos: WritableSignal<Video[]> = signal<Video[]>([]);
     videoUrl: WritableSignal<string[]> = signal<string[]>([]);
     videoPath: WritableSignal<string> = signal<string>('');
+    imagePath: WritableSignal<string> = signal<string>('');
     fileUpload: File = new File([], '');
+    imgUpload: File = new File([], '');
     visible = false;
     uploadVideoForm: FormGroup<VideoForm> = this.fb.group<VideoForm>({
         actors: this.fb.control([]),
@@ -98,11 +100,16 @@ export class VideoManagementComponent implements OnInit {
 
     submitUpload() {
         this.videoService
-            .uploadVideo(this.uploadVideoForm.value as Video, this.fileUpload)
+            .uploadVideo(this.uploadVideoForm.value as Video, this.fileUpload, this.imgUpload)
             .pipe(
                 switchMap(() => this.getAllVideo()),
                 finalize(() => this.cdr.detectChanges())
             )
             .subscribe();
+    }
+
+    selectThumbnailFile($event: FileSelectEvent) {
+        this.imgUpload = $event.currentFiles[0];
+        this.imagePath.set($event.currentFiles[0].name);
     }
 }

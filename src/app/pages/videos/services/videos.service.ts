@@ -12,10 +12,11 @@ export class VideoService {
         return this.http.get<Video[]>(environment.fiyUrl + '/videos');
     }
 
-    uploadVideo(videos: Video, file: File): Observable<any> {
+    uploadVideo(videos: Video, file: File, img: File): Observable<any> {
         console.log(videos);
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('video', file);
+        formData.append('thumbnail', img);
         Object.entries(videos).forEach(([key, value]) => {
             if (Array.isArray(value)) {
                 formData.append(key, JSON.stringify(value));
