@@ -4,3 +4,42 @@
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
 
+/* Dropdown item label text */
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
+    content: "12px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
+    content: "14px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
+    content: "16px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
+    content: "18px";
+}
+
+/* Trigger label text (cái nút hiển thị) */
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before {
+    content: "12px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
+    content: "14px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before {
+    content: "16px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
+    content: "18px";
+}
+
+/* Highlight item đã chọn */
+.ql-snow .ql-picker.ql-size .ql-picker-item.ql-selected {
+    background-color: #007ad9;
+    color: white;
+}

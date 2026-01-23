@@ -18,10 +18,21 @@ import { MultiSelect } from 'primeng/multiselect';
 import { Textarea } from 'primeng/textarea';
 import { ConvertToMbPipe } from '../../../../pipes/convert-to-mb.pipe';
 import { finalize, Observable, switchMap, tap } from 'rxjs';
+import Quill from 'quill';
+import { AlignStyle } from 'quill/formats/align';
+import { QuillEditorComponent } from 'ngx-quill';
+import { BoldBlot, ItalicBlot } from '../../../../../quill-config';
+
+Quill.register(AlignStyle, true);
+const Size = Quill.import('attributors/style/size') as any;
+Size.whitelist = ['12px', '14px', '16px', '18px'];
+Quill.register(Size, true);
+Quill.register(BoldBlot, true);
+Quill.register(ItalicBlot, true);
 
 @Component({
     selector: 'app-video-management',
-    imports: [Card, FileUpload, FormsModule, InputText, Button, DropdownModule, TableModule, ButtonDirective, DatePipe, FloatLabel, ReactiveFormsModule, Select, Drawer, StyleClass, MultiSelect, Textarea, ConvertToMbPipe],
+    imports: [Card, FileUpload, FormsModule, InputText, Button, DropdownModule, TableModule, ButtonDirective, DatePipe, FloatLabel, ReactiveFormsModule, Select, Drawer, StyleClass, MultiSelect, Textarea, ConvertToMbPipe, QuillEditorComponent],
     templateUrl: './video-management.component.html',
     standalone: true,
     styleUrl: './video-management.component.scss'
@@ -37,6 +48,11 @@ export class VideoManagementComponent implements OnInit {
     videoService = inject(VideoService);
     searchText = '';
     selectedFormat: any;
+    quillModules = {
+        toolbar: [['bold', 'italic', 'underline'], [{ size: ['12px', '14px', '16px', '18px'] }], [{ color: [] }, { background: [] }], [{ align: [] }], [{ font: [] }]]
+    };
+
+    text: string = '';
     videos: WritableSignal<Video[]> = signal<Video[]>([]);
     videoUrl: WritableSignal<string[]> = signal<string[]>([]);
     videoPath: WritableSignal<string> = signal<string>('');
@@ -61,7 +77,7 @@ export class VideoManagementComponent implements OnInit {
     protected readonly open = open;
 
     ngOnInit(): void {
-        this.getAllVideo().subscribe();
+        this.getAllVideo();
     }
 
     getAllVideo(): Observable<Video[]> {
@@ -111,5 +127,9 @@ export class VideoManagementComponent implements OnInit {
     selectThumbnailFile($event: FileSelectEvent) {
         this.imgUpload = $event.currentFiles[0];
         this.imagePath.set($event.currentFiles[0].name);
+    }
+
+    showw() {
+        console.log(this.text);
     }
 }

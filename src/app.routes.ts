@@ -11,7 +11,10 @@ export const appRoutes: Routes = [
         children: [
             { path: '', component: Dashboard },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
-            { path: 'videos', component: VideoManagementComponent }
+            {
+                path: 'videos',
+                component: VideoManagementComponent
+            }
         ]
     },
     { path: 'notfound', component: Notfound },
